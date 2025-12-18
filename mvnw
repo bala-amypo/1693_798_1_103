@@ -210,7 +210,8 @@ elif set_java_home; then
 	    setDefault( new Downloader() );
 	    java.nio.file.Files.copy( java.net.URI.create( args[0] ).toURL().openStream(), java.nio.file.Paths.get( args[1] ).toAbsolutePath().normalize() );
 	  }
-	}
+	}0.
+  .
 	END
   # For Cygwin/MinGW, switch paths to Windows format before running javac and java
   verbose " - Compiling Downloader.java ..."
