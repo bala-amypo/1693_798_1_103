@@ -3,8 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.ShiftTemplate;
 import com.example.demo.service.ShiftTemplateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shift-templates")
-@RequiredArgsConstructor // Automatically creates constructor for ShiftTemplateService
+@RequiredArgsConstructor
 public class ShiftTemplateController {
 
     private final ShiftTemplateService shiftTemplateService;
@@ -29,7 +27,6 @@ public class ShiftTemplateController {
 
     @GetMapping("/department/{departmentId}")
     public ResponseEntity<List<ShiftTemplate>> getTemplatesByDepartment(@PathVariable Long departmentId) {
-        // Note: Ensure your service method matches this call
         return ResponseEntity.ok(shiftTemplateService.getTemplatesByDepartment(departmentId));
     }
 
