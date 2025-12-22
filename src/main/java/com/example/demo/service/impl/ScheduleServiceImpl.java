@@ -5,7 +5,7 @@ import com.example.demo.repository.ScheduleRepository;
 import com.example.demo.service.ScheduleService;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,5 +27,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteSchedule(Long id) {
         scheduleRepository.deleteById(id);
+    }
+
+    @Override
+    public List<GeneratedShiftSchedule> getByDate(LocalDate date) {
+        return scheduleRepository.findByShiftDate(date);
     }
 }
