@@ -1,20 +1,57 @@
-// Inside User.java
-public String getEmail() { return this.email; }
-public String getPassword() { return this.password; }
-public UserRole getRole() { return this.role; }
+package com.example.demo.model;
 
-// Required by UserDetails interface
-@Override
-public String getUsername() { return this.email; } 
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Override
-public boolean isAccountNonExpired() { return true; }
+import java.util.Collection;
+import java.util.List;
 
-@Override
-public boolean isAccountNonLocked() { return true; }
+@Entity
+@Table(name = "users")
+@Data
+public class User implements UserDetails {
 
-@Override
-public boolean isCredentialsNonExpired() { return true; }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Override
-public boolean isEnabled() { return true; }
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    // Helper method for other classes to use
+    public UserRole getRole() {
+        return this.role;
+    }
+
+    // Spring Security UserDetails Methods
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+}
