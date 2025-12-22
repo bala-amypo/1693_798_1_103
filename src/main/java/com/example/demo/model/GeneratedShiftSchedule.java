@@ -33,10 +33,8 @@ public class GeneratedShiftSchedule {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    // Default constructor
     public GeneratedShiftSchedule() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
