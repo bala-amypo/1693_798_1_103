@@ -4,8 +4,8 @@ import com.example.demo.model.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-    Employee createEmployee(Employee employee); // Match Controller call
-    List<Employee> getAll();                    // Match Controller call
-    Employee getEmployee(Long id);               // Match Controller call
+    Employee createEmployee(Employee employee);
+    List<Employee> getAll();
+    Employee getEmployee(Long id);
     void deleteEmployee(Long id);
 }
