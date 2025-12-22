@@ -19,8 +19,7 @@ public class AvailabilityController {
     @PostMapping("/employee/{employeeId}")
     public ResponseEntity<EmployeeAvailability> createAvailability(@PathVariable Long employeeId,
                                                                  @RequestBody EmployeeAvailability availability) {
-        // Set employee ID - service will lookup actual Employee entity
-        availability.setEmployeeId(employeeId);
+        // Service handles employee lookup internally - NO setEmployeeId needed
         return ResponseEntity.ok(availabilityService.createEmployeeAvailability(availability));
     }
 

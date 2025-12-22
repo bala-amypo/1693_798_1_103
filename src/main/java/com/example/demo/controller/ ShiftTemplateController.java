@@ -17,7 +17,7 @@ public class ShiftTemplateController {
     @PostMapping("/department/{departmentId}")
     public ResponseEntity<ShiftTemplate> createShiftTemplate(@PathVariable Long departmentId, 
                                                            @RequestBody ShiftTemplate template) {
-        template.setDepartmentId(departmentId); // Service will lookup Department
+        // Service handles department lookup - NO setDepartmentId needed
         return ResponseEntity.ok(shiftTemplateService.createShiftTemplate(template));
     }
 
