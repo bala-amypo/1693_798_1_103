@@ -41,4 +41,20 @@ public class GeneratedShiftSchedule {
     public void setId(Long id) { this.id = id; }
 
     public LocalDate getShiftDate() { return shiftDate; }
-    public void setShiftDate(LocalDate shiftDate) { this.shiftDate = shift
+    public void setShiftDate(LocalDate shiftDate) { this.shiftDate = shiftDate; }
+
+    public LocalTime getStartTime() { return startTime; }
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+
+    public LocalTime getEndTime() { return endTime; }
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+
+    public ShiftTemplate getShiftTemplate() { return shiftTemplate; }
+    public void setShiftTemplate(ShiftTemplate shiftTemplate) { this.shiftTemplate = shiftTemplate; }
+
+    public Department getDepartment() { return department; }
+    public void setDepartment(Department department) { this.department = department; }
+
+    public Employee getEmployee() { return employee; }
+    public void setEmployee(Employee employee) { this.employee = employee; }
+}
