@@ -5,24 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleService {
-
-    /**
-     * Automatically generates a schedule for a specific department and date range.
-     */
-    List<GeneratedShiftSchedule> generateAutoSchedule(Long departmentId, LocalDate startDate, LocalDate endDate);
-
-    /**
-     * Retrieves all generated schedules for a specific date.
-     */
-    List<GeneratedShiftSchedule> getSchedulesByDate(LocalDate date);
-
-    /**
-     * Retrieves the schedule for a specific employee.
-     */
-    List<GeneratedShiftSchedule> getSchedulesByEmployee(Long employeeId);
-
-    /**
-     * Deletes a specific schedule entry.
-     */
+    // These names must match your Controller calls exactly
+    List<GeneratedShiftSchedule> generateForDate(LocalDate date); 
+    List<GeneratedShiftSchedule> getByDate(LocalDate date);
     void deleteSchedule(Long id);
 }
