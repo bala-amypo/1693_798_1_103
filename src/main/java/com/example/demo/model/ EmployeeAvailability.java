@@ -1,15 +1,24 @@
+package com.example.demo.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "employeeavailability")
+@Table(name = "employee_availability")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeAvailability {
-    // ... other fields ...
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    private Employee employee;  // JPA handles relationship
-    
-    // NO setEmployeeId() method needed!
-    
-    // Normal getters/setters only
-    public Employee getEmployee() { return employee; }
-    public void setEmployee(Employee employee) { this.employee = employee; }
+    private Employee employee;
+
+    private LocalDate date;
+    private boolean isAvailable;
 }
