@@ -19,4 +19,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<GeneratedShiftSchedule> generateForDate(LocalDate date) {
         return scheduleRepository.findByShiftDate(date);
     }
+
+    @Override
+    public List<GeneratedShiftSchedule> getByDate(LocalDate date) {
+        return scheduleRepository.findByShiftDate(date);
+    }
 }
