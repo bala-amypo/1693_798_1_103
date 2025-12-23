@@ -23,7 +23,6 @@
         <java.version>17</java.version>
     </properties>
 
-    <!-- 🔴 THIS TAG MUST CLOSE -->
     <dependencies>
 
         <dependency>
@@ -66,7 +65,6 @@
         </dependency>
 
     </dependencies>
-    <!-- 🔴 THIS WAS MISSING -->
 
     <build>
         <plugins>
@@ -78,4 +76,4 @@
     </build>
 
 </project>
-<!-- 🔴 THIS WAS ALSO MISSING -->
+
