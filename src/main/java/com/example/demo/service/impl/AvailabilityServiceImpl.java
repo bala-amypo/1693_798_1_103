@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
-    
+
     private final AvailabilityRepository availabilityRepository;
 
     public AvailabilityServiceImpl(AvailabilityRepository availabilityRepository) {
@@ -16,8 +16,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     @Override
-    public List<EmployeeAvailability> getAvailabilityByEmployee(Long employeeId) {
-        // This matches the findByEmployeeId method in your Repository
+    public List<EmployeeAvailability> getByEmployee(Long employeeId) {
         return availabilityRepository.findByEmployeeId(employeeId);
     }
 }
