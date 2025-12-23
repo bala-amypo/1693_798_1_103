@@ -1,11 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Data
 public class EmployeeAvailability {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +15,16 @@ public class EmployeeAvailability {
 
     private LocalDate availableDate;
     private Boolean available;
+
+    // --- Add these Getters/Setters to fix the "cannot find symbol" errors ---
+    public Long getId() { return id; }
+    
+    public Employee getEmployee() { return employee; }
+    public void setEmployee(Employee employee) { this.employee = employee; }
+
+    public LocalDate getAvailableDate() { return availableDate; }
+    public void setAvailableDate(LocalDate availableDate) { this.availableDate = availableDate; }
+
+    public Boolean getAvailable() { return available; }
+    public void setAvailable(Boolean available) { this.available = available; }
 }
