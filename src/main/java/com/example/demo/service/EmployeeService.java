@@ -7,5 +7,5 @@ public interface EmployeeService {
     Employee createEmployee(Employee employee);
     List<Employee> getAll();
     Employee getEmployee(Long id);
-    void deleteEmployee(Long id);
+    void deleteEmployee(Long id); // The method that was missing in the implementation
 }
