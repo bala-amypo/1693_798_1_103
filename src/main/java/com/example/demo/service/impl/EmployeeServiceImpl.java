@@ -1,41 +1,25 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Employee;
+import com.example.demo.entity.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
-
-    @Override
-    public List<Employee> getAll() {
-        return employeeRepository.findAll();
-    }
-
-    @Override
-    public Employee getEmployee(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
-    }
-
-    @Override
-    public void deleteEmployee(Long id) {
-        if (!employeeRepository.existsById(id)) {
-            throw new RuntimeException("Cannot delete. Employee not found with id: " + id);
-        }
-        employeeRepository.deleteById(id);
+    public Page<Employee> getActiveEmployees(Pageable pageable) {
+        return employeeRepository.findByActiveTrue(pageable);
     }
 }

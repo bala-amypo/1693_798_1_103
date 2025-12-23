@@ -13,16 +13,13 @@ public class Employee {
     private Long id;
 
     private String name;
+    private boolean active;
 
-    private String department;
+    public Employee() {
+    }
 
-    private boolean active; // <--- required field
-
-    public Employee() {}
-
-    public Employee(String name, String department, boolean active) {
+    public Employee(String name, boolean active) {
         this.name = name;
-        this.department = department;
         this.active = active;
     }
 
@@ -40,14 +37,6 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
     }
 
     public boolean isActive() {
