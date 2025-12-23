@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleService {
-    // This exact method signature must exist here
-    List<GeneratedShiftSchedule> generateForDate(LocalDate date);
+    GeneratedShiftSchedule saveSchedule(GeneratedShiftSchedule schedule);
+    List<GeneratedShiftSchedule> getAllSchedules();
+    void deleteSchedule(Long id);
+    List<GeneratedShiftSchedule> getByDate(LocalDate date);
 }
