@@ -82,7 +82,12 @@
             <version>2.2.0</version>
         </dependency>
 
-        <!-- Spring Data pagination types (Page, Pageable) are included via data-jpa -->
+        <!-- MySQL JDBC driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
