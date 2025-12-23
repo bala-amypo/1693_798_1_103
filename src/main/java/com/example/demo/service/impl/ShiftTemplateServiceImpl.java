@@ -16,8 +16,23 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
     }
 
     @Override
-    public ShiftTemplate save(ShiftTemplate template) {
+    public ShiftTemplate saveTemplate(ShiftTemplate template) {
         return shiftTemplateRepository.save(template);
+    }
+
+    @Override
+    public ShiftTemplate getTemplateById(Long id) {
+        return shiftTemplateRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<ShiftTemplate> getTemplatesByDepartment(Long departmentId) {
+        return shiftTemplateRepository.findByDepartmentId(departmentId);
+    }
+
+    @Override
+    public void deleteTemplate(Long id) {
+        shiftTemplateRepository.deleteById(id);
     }
 
     @Override
