@@ -1,32 +1,33 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.service.EmployeeService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-public interface EmployeeService {
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
 
-    /**
-     * Saves or updates an employee.
-     */
-    Employee saveEmployee(Employee employee);
+    private final EmployeeRepository employeeRepository;
 
-    /**
-     * Retrieves an employee by their ID.
-     */
-    Employee getEmployeeById(Long id);
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
-    /**
-     * Retrieves all employees.
-     */
-    List<Employee> getAllEmployees();
+    @Override
+    public Employee createEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 
-    /**
-     * Retrieves all employees belonging to a specific department.
-     */
-    List<Employee> getEmployeesByDepartment(Long departmentId);
+    @Override
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
+    }
 
-    /**
-     * Deletes an employee by their ID.
-     */
-    void deleteEmployee(Long id);
+    @Override
+    public Employee getEmployee(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
 }

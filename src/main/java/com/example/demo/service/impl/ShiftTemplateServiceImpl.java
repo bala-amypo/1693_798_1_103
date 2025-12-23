@@ -1,11 +1,27 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.ShiftTemplate;
+import com.example.demo.repository.ShiftTemplateRepository;
+import com.example.demo.service.ShiftTemplateService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-public interface ShiftTemplateService {
-    ShiftTemplate saveTemplate(ShiftTemplate template);
-    ShiftTemplate getTemplateById(Long id);
-    List<ShiftTemplate> getTemplatesByDepartment(Long departmentId);
-    void deleteTemplate(Long id);
+@Service
+public class ShiftTemplateServiceImpl implements ShiftTemplateService {
+
+    private final ShiftTemplateRepository shiftTemplateRepository;
+
+    public ShiftTemplateServiceImpl(ShiftTemplateRepository shiftTemplateRepository) {
+        this.shiftTemplateRepository = shiftTemplateRepository;
+    }
+
+    @Override
+    public ShiftTemplate save(ShiftTemplate template) {
+        return shiftTemplateRepository.save(template);
+    }
+
+    @Override
+    public List<ShiftTemplate> getAll() {
+        return shiftTemplateRepository.findAll();
+    }
 }
