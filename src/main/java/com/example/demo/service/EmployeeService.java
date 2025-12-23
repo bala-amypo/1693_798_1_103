@@ -1,11 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Employee;
-import java.util.List;
+import com.example.demo.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
-    Employee createEmployee(Employee employee);
-    List<Employee> getAll();
-    Employee getEmployee(Long id);
-    void deleteEmployee(Long id); // The method that was missing in the implementation
+    Page<Employee> getActiveEmployees(Pageable pageable);
 }
