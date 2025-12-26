@@ -1,6 +1,7 @@
 package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
 public class Department {
@@ -8,12 +9,14 @@ public class Department {
     private Long id;
     private String name;
     private String description;
-    private String location; // Used for requiredSkills in tests
+    private String location; 
+    private LocalDateTime createdAt;
 
     public Department(String name, String description, String location) {
         this.name = name;
         this.description = description;
         this.location = location;
+        this.createdAt = LocalDateTime.now();
     }
     public String getRequiredSkills() { return location; }
 }
