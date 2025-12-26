@@ -16,6 +16,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department create(Department d) {
+        // Required for testDepartmentNameExists
+        if (departmentRepository.findByName(d.getName()).isPresent()) {
+            throw new RuntimeException("Department name already exists");
+        }
         return departmentRepository.save(d);
     }
 
