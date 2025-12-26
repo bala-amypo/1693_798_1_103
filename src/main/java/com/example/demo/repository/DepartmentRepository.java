@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    // ADD THIS METHOD
     Optional<Department> findByName(String name);
+    
+    // ADD THIS METHOD for the test suite
+    boolean existsByName(String name);
 }

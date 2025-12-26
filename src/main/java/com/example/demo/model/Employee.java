@@ -1,10 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Data; // If using Lombok
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data // This generates getters/setters automatically
+@Data
+@NoArgsConstructor // Required for JPA
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +17,14 @@ public class Employee {
     private String role;
     private String skills;
     private int experience;
-    
-    // ADD THIS FIELD
-    private Integer maxHoursPerWeek; 
+    private Integer maxHoursPerWeek;
 
-    // If NOT using Lombok, add these manually:
-    public Integer getMaxHoursPerWeek() { return maxHoursPerWeek; }
-    public void setMaxHoursPerWeek(Integer maxHoursPerWeek) { this.maxHoursPerWeek = maxHoursPerWeek; }
+    // ADD THIS CONSTRUCTOR for the test suite
+    public Employee(String fullName, String email, String role, String skills, int experience) {
+        this.fullName = fullName;
+        this.email = email;
+        this.role = role;
+        this.skills = skills;
+        this.experience = experience;
+    }
 }
