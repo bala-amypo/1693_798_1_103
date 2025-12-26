@@ -15,7 +15,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    // ADD THIS METHOD to fix the "cannot find symbol: method list()" error
     @GetMapping
     public ResponseEntity<List<Employee>> list() {
         return ResponseEntity.ok(employeeService.getAll());

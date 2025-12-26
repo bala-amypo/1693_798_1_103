@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeAvailability;
+import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AvailabilityService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
@@ -12,14 +12,18 @@ import java.util.List;
 @RequestMapping("/api/availability")
 public class AvailabilityController {
     private final AvailabilityService availabilityService;
+    private final EmployeeRepository employeeRepository;
 
-    public AvailabilityController(AvailabilityService availabilityService) {
+    // Fix constructor signature to match test suite expectations
+    public AvailabilityController(AvailabilityService availabilityService, EmployeeRepository employeeRepository) {
         this.availabilityService = availabilityService;
+        this.employeeRepository = employeeRepository;
     }
 
+    // Fix method name from getByDate to byDate to match test suite
     @GetMapping("/date/{date}")
-    public ResponseEntity<List<EmployeeAvailability>> getByDate(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return ResponseEntity.ok(availabilityService.getByDate(date));
+    public ResponseEntity<List<EmployeeAvailability>> byDate(@PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(availabilityService.getByDate(localDate));
     }
 }
