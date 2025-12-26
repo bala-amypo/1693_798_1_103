@@ -14,6 +14,7 @@ public class AvailabilityController {
     private final AvailabilityService availabilityService;
     private final EmployeeRepository employeeRepository;
 
+    // Fixed constructor signature (image_941526.png)
     public AvailabilityController(AvailabilityService availabilityService, EmployeeRepository employeeRepository) {
         this.availabilityService = availabilityService;
         this.employeeRepository = employeeRepository;
@@ -24,6 +25,7 @@ public class AvailabilityController {
         return ResponseEntity.ok(availabilityService.create(availability));
     }
 
+    // Method name changed to byDate to fix compilation error (image_941526.png)
     @GetMapping("/date/{date}")
     public ResponseEntity<List<EmployeeAvailability>> byDate(@PathVariable String date) {
         LocalDate localDate = LocalDate.parse(date);
