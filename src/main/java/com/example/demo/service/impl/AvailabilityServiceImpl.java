@@ -48,6 +48,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Override
     public List<EmployeeAvailability> getByEmployee(Long employeeId) {
+        // This call will now work because findByEmployeeId is defined in the repo
         return availabilityRepository.findByEmployeeId(employeeId);
     }
 }
