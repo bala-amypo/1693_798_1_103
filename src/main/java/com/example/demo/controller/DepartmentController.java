@@ -9,7 +9,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
-    public DepartmentController(DepartmentService ds) { this.departmentService = ds; }
+
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Department> create(@RequestBody Department department) {
+        return ResponseEntity.ok(departmentService.create(department));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> get(@PathVariable Long id) {
@@ -23,6 +31,6 @@ public class DepartmentController {
             return ResponseEntity.notFound().build();
         }
         departmentService.delete(id);
-        return ResponseEntity.ok("Deleted"); // Test expects "Deleted"
+        return ResponseEntity.ok("Deleted");
     }
 }

@@ -15,6 +15,11 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PostMapping
+    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+        return ResponseEntity.ok(employeeService.createEmployee(employee));
+    }
+
     @GetMapping
     public ResponseEntity<List<Employee>> list() {
         return ResponseEntity.ok(employeeService.getAll());

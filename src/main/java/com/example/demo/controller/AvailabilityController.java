@@ -14,13 +14,16 @@ public class AvailabilityController {
     private final AvailabilityService availabilityService;
     private final EmployeeRepository employeeRepository;
 
-    // Fix constructor signature to match test suite expectations
     public AvailabilityController(AvailabilityService availabilityService, EmployeeRepository employeeRepository) {
         this.availabilityService = availabilityService;
         this.employeeRepository = employeeRepository;
     }
 
-    // Fix method name from getByDate to byDate to match test suite
+    @PostMapping
+    public ResponseEntity<EmployeeAvailability> create(@RequestBody EmployeeAvailability availability) {
+        return ResponseEntity.ok(availabilityService.create(availability));
+    }
+
     @GetMapping("/date/{date}")
     public ResponseEntity<List<EmployeeAvailability>> byDate(@PathVariable String date) {
         LocalDate localDate = LocalDate.parse(date);
