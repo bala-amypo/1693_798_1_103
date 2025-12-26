@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
-
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
+    public DepartmentController(DepartmentService ds) { this.departmentService = ds; }
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> get(@PathVariable Long id) {
@@ -21,12 +18,11 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        // Fix for testDeleteMissingDepartment and testDepartmentDeleteController
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         if (departmentService.get(id) == null) {
             return ResponseEntity.notFound().build();
         }
         departmentService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Deleted"); // Test expects "Deleted"
     }
 }

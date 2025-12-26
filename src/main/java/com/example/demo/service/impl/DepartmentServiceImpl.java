@@ -9,32 +9,26 @@ import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
-
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
+    public DepartmentServiceImpl(DepartmentRepository repo) { this.departmentRepository = repo; }
 
     @Override
     public Department create(Department d) {
-        // Fix for testDepartmentNameExists
-        if (departmentRepository.findByName(d.getName()).isPresent()) {
-            throw new RuntimeException("Department name already exists");
+        if (departmentRepository.existsByName(d.getName())) {
+            throw new RuntimeException("exists");
         }
         return departmentRepository.save(d);
     }
 
     @Override
-    public Department get(Long id) {
-        return departmentRepository.findById(id).orElse(null);
-    }
-
+    public Department get(Long id) { return departmentRepository.findById(id).orElse(null); }
     @Override
-    public List<Department> getAll() {
-        return departmentRepository.findAll();
-    }
+    public List<Department> getAll() { return departmentRepository.findAll(); }
 
     @Override
     public void delete(Long id) {
-        departmentRepository.deleteById(id);
+        Department dept = departmentRepository.findById(id).orElse(null);
+        if (dept != null) {
+            departmentRepository.delete(dept);
+        }
     }
 }
