@@ -1,22 +1,25 @@
 package com.example.demo.model;
-import jakarta.persistence.*;
-import lombok.*;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+import jakarta.persistence.*;
+import lombok.Data; // If using Lombok
+
+@Entity
+@Data // This generates getters/setters automatically
 public class Employee {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String fullName;
     private String email;
     private String role;
     private String skills;
     private int experience;
+    
+    // ADD THIS FIELD
+    private Integer maxHoursPerWeek; 
 
-    public Employee(String fullName, String email, String role, String skills, int experience) {
-        this.fullName = fullName;
-        this.email = email;
-        this.role = (role == null) ? "STAFF" : role;
-        this.skills = skills;
-        this.experience = experience;
-    }
+    // If NOT using Lombok, add these manually:
+    public Integer getMaxHoursPerWeek() { return maxHoursPerWeek; }
+    public void setMaxHoursPerWeek(Integer maxHoursPerWeek) { this.maxHoursPerWeek = maxHoursPerWeek; }
 }
