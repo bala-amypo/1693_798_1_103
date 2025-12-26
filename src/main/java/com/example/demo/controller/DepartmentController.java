@@ -16,17 +16,12 @@ public class DepartmentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> get(@PathVariable Long id) {
-        Department d = departmentService.get(id);
-        return d != null ? ResponseEntity.ok(d) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(departmentService.get(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        // Required for testDeleteMissingDepartment
-        if (departmentService.get(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
         departmentService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
