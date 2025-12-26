@@ -1,8 +1,14 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.Department;
+import com.example.demo.repository.DepartmentRepository;
+import com.example.demo.service.DepartmentService;
+import org.springframework.stereotype.Service;
+
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
 
-    // Test passes repository in constructor
     public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
@@ -11,5 +17,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department create(Department d) {
         return departmentRepository.save(d);
     }
-    // ... implement other methods
+
+    @Override
+    public Department get(Long id) {
+        return departmentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Long id) {
+        departmentRepository.deleteById(id);
+    }
 }
