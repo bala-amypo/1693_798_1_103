@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
-
     private final AvailabilityRepository availabilityRepository;
     private final EmployeeRepository employeeRepository;
 
@@ -21,6 +20,13 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Override
     public EmployeeAvailability create(EmployeeAvailability availability) {
+        // Fix for testAvailabilityUniqueCheck
+        if (availability.getEmployee() != null && availability.getAvailableDate() != null) {
+            availabilityRepository.findByEmployee_IdAndAvailableDate(
+                availability.getEmployee().getId(), 
+                availability.getAvailableDate()
+            ).ifPresent(s -> { throw new RuntimeException("Availability already exists"); });
+        }
         return availabilityRepository.save(availability);
     }
 
@@ -48,7 +54,6 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Override
     public List<EmployeeAvailability> getByEmployee(Long employeeId) {
-        // This call will now work because findByEmployeeId is defined in the repo
-        return availabilityRepository.findByEmployeeId(employeeId);
+        return availabilityRepository.findByEmployee_Id(employeeId);
     }
 }

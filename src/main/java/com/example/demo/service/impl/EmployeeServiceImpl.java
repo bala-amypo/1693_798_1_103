@@ -11,12 +11,17 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
-    public EmployeeServiceImpl(EmployeeRepository repo) { this.repository = repo; }
+
+    public EmployeeServiceImpl(EmployeeRepository repo) { 
+        this.repository = repo; 
+    }
 
     @Override
     public Employee createEmployee(Employee e) {
-        if (repository.existsByEmail(e.getEmail())) throw new RuntimeException("exists");
-        // FIX: Enforce hours validation (0-168)
+        if (repository.existsByEmail(e.getEmail())) {
+            throw new RuntimeException("exists");
+        }
+        // Fix for testEmployeeMaxHoursInvalid: Validation range 0-168
         if (e.getMaxHoursPerWeek() != null && (e.getMaxHoursPerWeek() < 0 || e.getMaxHoursPerWeek() > 168)) {
             throw new IllegalArgumentException("Invalid max hours");
         }
@@ -37,14 +42,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(Long id) { repository.deleteById(id); }
+    public void deleteEmployee(Long id) { 
+        repository.deleteById(id); 
+    }
 
     @Override
-    public Employee findByEmail(String email) { return repository.findByEmail(email).orElse(null); }
+    public Employee findByEmail(String email) { 
+        return repository.findByEmail(email).orElse(null); 
+    }
 
     @Override
-    public List<Employee> getAll() { return repository.findAll(); }
+    public List<Employee> getAll() { 
+        return repository.findAll(); 
+    }
 
     @Override
-    public Page<Employee> getActiveEmployees(Pageable pageable) { return repository.findAll(pageable); }
+    public Page<Employee> getActiveEmployees(Pageable pageable) { 
+        return repository.findAll(pageable); 
+    }
 }
