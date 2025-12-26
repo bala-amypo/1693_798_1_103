@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeAvailability;
 import com.example.demo.service.AvailabilityService;
-import com.example.demo.repository.EmployeeRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
@@ -13,12 +13,13 @@ import java.util.List;
 public class AvailabilityController {
     private final AvailabilityService availabilityService;
 
-    public AvailabilityController(AvailabilityService availabilityService, EmployeeRepository employeeRepository) {
+    public AvailabilityController(AvailabilityService availabilityService) {
         this.availabilityService = availabilityService;
     }
 
-    @GetMapping("/date")
-    public ResponseEntity<List<EmployeeAvailability>> byDate(@RequestParam String date) {
-        return ResponseEntity.ok(availabilityService.getByDate(LocalDate.parse(date)));
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<EmployeeAvailability>> getByDate(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(availabilityService.getByDate(date));
     }
 }
