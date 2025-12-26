@@ -1,38 +1,15 @@
-package com.example.demo.controller;
-
-import com.example.demo.model.Department;
-import com.example.demo.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/departments")
 public class DepartmentController {
+    private final DepartmentService departmentService;
 
-    @Autowired
-    private DepartmentService departmentService;
-
-    @PostMapping
-    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
-        return ResponseEntity.ok(departmentService.createDepartment(department));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Department>> getAllDepartments() {
-        return ResponseEntity.ok(departmentService.getAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentService.get(id));
+    // Test requires this constructor
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         departmentService.delete(id);
-        return ResponseEntity.ok().build();
     }
 }

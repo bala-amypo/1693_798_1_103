@@ -1,11 +1,5 @@
-package com.example.demo.service;
-
-import com.example.demo.model.Department;
-import java.util.List;
-
 public interface DepartmentService {
-    Department createDepartment(Department department);
+    Department create(Department d); // Test calls this
     Department get(Long id);
     void delete(Long id);
-    List<Department> getAll();
 }
