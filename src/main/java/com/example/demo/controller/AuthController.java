@@ -16,7 +16,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Employee> register(@RequestBody Employee employee) {
-        // Reuses existing service logic to maintain test consistency
         return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 }

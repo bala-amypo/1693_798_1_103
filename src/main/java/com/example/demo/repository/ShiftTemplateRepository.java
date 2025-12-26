@@ -9,6 +9,6 @@ public interface ShiftTemplateRepository extends JpaRepository<ShiftTemplate, Lo
     List<ShiftTemplate> findByDepartmentId(Long departmentId);
     List<ShiftTemplate> findByDepartment_Id(Long departmentId);
     
-    // ADD THIS METHOD to fix the compilation error in the test suite
+    // Required to fix "cannot find symbol" error in MasterTestNGSuiteTest.java:[170,37]
     Optional<ShiftTemplate> findByTemplateNameAndDepartment_Id(String name, Long departmentId);
 }
