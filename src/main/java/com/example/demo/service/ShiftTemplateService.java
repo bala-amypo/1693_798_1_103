@@ -9,4 +9,7 @@ public interface ShiftTemplateService {
     List<ShiftTemplate> getTemplatesByDepartment(Long departmentId);
     void deleteTemplate(Long id);
     List<ShiftTemplate> getAll();
+    // Supporting method for the Master Test suite
+    ShiftTemplate create(ShiftTemplate st);
+    List<ShiftTemplate> getByDepartment(Long deptId);
 }

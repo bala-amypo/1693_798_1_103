@@ -18,5 +18,6 @@ public class Department {
         this.location = location;
         this.createdAt = LocalDateTime.now();
     }
+    // Required for the scheduling logic
     public String getRequiredSkills() { return location; }
 }
