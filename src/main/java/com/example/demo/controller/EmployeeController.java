@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,13 +15,15 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    // Required by Test line 490 - must return ResponseEntity for .getBody() to work
     @GetMapping
-    public List<Employee> list() { // Required by Test line 490
-        return employeeService.getAll();
+    public ResponseEntity<List<Employee>> list() {
+        return ResponseEntity.ok(employeeService.getAll());
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) { // Required by Test line 671
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         employeeService.deleteEmployee(id);
+        return ResponseEntity.noContent().build();
     }
 }
