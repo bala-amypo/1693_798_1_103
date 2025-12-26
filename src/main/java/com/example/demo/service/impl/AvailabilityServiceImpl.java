@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
+
     private final AvailabilityRepository availabilityRepository;
     private final EmployeeRepository employeeRepository;
 
@@ -18,13 +19,23 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         this.employeeRepository = employeeRepository;
     }
 
-    // FIX: Ensure this matches the signature in AvailabilityService exactly
     @Override
     public EmployeeAvailability create(EmployeeAvailability availability) {
         return availabilityRepository.save(availability);
     }
 
-    // FIX: Added missing delete method
+    @Override
+    public EmployeeAvailability update(Long id, EmployeeAvailability availability) {
+        return availabilityRepository.findById(id)
+            .map(existing -> {
+                existing.setAvailableDate(availability.getAvailableDate());
+                existing.setAvailable(availability.getAvailable());
+                existing.setEmployee(availability.getEmployee());
+                return availabilityRepository.save(existing);
+            })
+            .orElseThrow(() -> new RuntimeException("Availability record not found"));
+    }
+
     @Override
     public void delete(Long id) {
         availabilityRepository.deleteById(id);
