@@ -8,10 +8,14 @@ import java.util.Optional;
 
 public interface AvailabilityRepository extends JpaRepository<EmployeeAvailability, Long> {
     List<EmployeeAvailability> findByAvailableDate(LocalDate date);
-    List<EmployeeAvailability> findByEmployee_Id(Long employeeId);
+    
+    // Support both underscore and standard naming to satisfy all service calls
     List<EmployeeAvailability> findByEmployeeId(Long employeeId);
+    List<EmployeeAvailability> findByEmployee_Id(Long employeeId);
+    
+    // Required for the unique check logic in AvailabilityServiceImpl
     Optional<EmployeeAvailability> findByEmployee_IdAndAvailableDate(Long employeeId, LocalDate date);
     
-    // ADD THIS METHOD TO FIX THE ERROR
+    // Required for ScheduleServiceImpl logic
     List<EmployeeAvailability> findByAvailableDateAndAvailable(LocalDate date, boolean available);
 }
