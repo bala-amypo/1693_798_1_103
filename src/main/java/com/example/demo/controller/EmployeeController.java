@@ -2,27 +2,25 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/employees")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
 
-    @Autowired
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees/active")
-    public Page<Employee> getActiveEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return employeeService.getActiveEmployees(PageRequest.of(page, size));
+    @GetMapping
+    public List<Employee> list() { // Required by Test line 490
+        return employeeService.getAll();
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) { // Required by Test line 671
+        employeeService.deleteEmployee(id);
     }
 }
