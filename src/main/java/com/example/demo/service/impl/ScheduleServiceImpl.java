@@ -19,14 +19,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.shiftRepo = st; this.availRepo = av; this.empRepo = em; this.schedRepo = sc; this.deptRepo = de;
     }
 
+    @Override
     public List<GeneratedShiftSchedule> generateForDate(LocalDate date) {
         List<GeneratedShiftSchedule> results = new ArrayList<>();
         List<EmployeeAvailability> availableItems = availRepo.findByAvailableDateAndAvailable(date, true);
-        List<Department> depts = deptRepo.findAll();
-
-        for (Department d : depts) {
-            List<ShiftTemplate> templates = shiftRepo.findByDepartment_Id(d.getId());
-            for (ShiftTemplate st : templates) {
+        for (Department d : deptRepo.findAll()) {
+            for (ShiftTemplate st : shiftRepo.findByDepartment_Id(d.getId())) {
                 for (EmployeeAvailability av : availableItems) {
                     if (av.getEmployee().getSkills().contains(st.getRequiredSkills())) {
                         GeneratedShiftSchedule gs = new GeneratedShiftSchedule();
@@ -40,5 +38,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         return results;
     }
 
+    @Override
     public List<GeneratedShiftSchedule> getByDate(LocalDate date) { return schedRepo.findByShiftDate(date); }
 }

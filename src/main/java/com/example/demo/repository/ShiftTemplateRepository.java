@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface ShiftTemplateRepository extends JpaRepository<ShiftTemplate, Long> {
     List<ShiftTemplate> findByDepartment_Id(Long departmentId);
+    // Added for ShiftTemplateServiceImpl compatibility
+    List<ShiftTemplate> findByDepartmentId(Long departmentId); 
     Optional<ShiftTemplate> findByTemplateNameAndDepartment_Id(String name, Long deptId);
 }
