@@ -8,4 +8,6 @@ import java.util.List;
 public interface AvailabilityRepository extends JpaRepository<EmployeeAvailability, Long> {
     List<EmployeeAvailability> findByAvailableDate(LocalDate date);
     List<EmployeeAvailability> findByEmployeeId(Long employeeId);
+    // FIX: Added this method for ScheduleServiceImpl
+    List<EmployeeAvailability> findByAvailableDateAndAvailable(LocalDate date, boolean available);
 }

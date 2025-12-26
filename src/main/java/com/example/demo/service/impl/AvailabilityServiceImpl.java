@@ -13,15 +13,21 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     private final AvailabilityRepository availabilityRepository;
     private final EmployeeRepository employeeRepository;
 
-    // Required by Test line 44
     public AvailabilityServiceImpl(AvailabilityRepository availabilityRepository, EmployeeRepository employeeRepository) {
         this.availabilityRepository = availabilityRepository;
         this.employeeRepository = employeeRepository;
     }
 
+    // FIX: Ensure this matches the signature in AvailabilityService exactly
     @Override
-    public EmployeeAvailability create(EmployeeAvailability availability) { // Required by Test line 247
+    public EmployeeAvailability create(EmployeeAvailability availability) {
         return availabilityRepository.save(availability);
+    }
+
+    // FIX: Added missing delete method
+    @Override
+    public void delete(Long id) {
+        availabilityRepository.deleteById(id);
     }
 
     @Override
