@@ -25,13 +25,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void delete(Long id) {
-        departmentRepository.deleteById(id);
-    }
-
-    // FIX: Added missing override for DepartmentService
-    @Override
     public List<Department> getAll() {
         return departmentRepository.findAll();
+    }
+
+    @Override
+    public void delete(Long id) {
+        departmentRepository.deleteById(id);
     }
 }

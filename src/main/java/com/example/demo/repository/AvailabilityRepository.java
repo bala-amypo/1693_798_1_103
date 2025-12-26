@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AvailabilityRepository extends JpaRepository<EmployeeAvailability, Long> {
-    
-    // This is the specific method the compiler is looking for:
-    List<EmployeeAvailability> findByEmployeeId(Long employeeId);
-
-    // It is good practice to include these for the rest of your service logic:
-    List<EmployeeAvailability> findByAvailableDate(LocalDate date);
-    List<EmployeeAvailability> findByAvailableDateAndAvailable(LocalDate date, boolean available);
+    // Required by Test line 241
     Optional<EmployeeAvailability> findByEmployee_IdAndAvailableDate(Long employeeId, LocalDate date);
+    
+    // Required by Test line 638 & 639
+    List<EmployeeAvailability> findByEmployee_Id(Long employeeId);
+    
+    List<EmployeeAvailability> findByAvailableDate(LocalDate date);
+    
+    List<EmployeeAvailability> findByAvailableDateAndAvailable(LocalDate date, boolean available);
 }
