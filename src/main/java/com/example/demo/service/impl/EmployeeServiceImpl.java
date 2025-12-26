@@ -1,4 +1,5 @@
 package com.example.demo.service.impl;
+
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
@@ -15,22 +16,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee createEmployee(Employee e) {
         if (repository.existsByEmail(e.getEmail())) throw new RuntimeException("exists");
+        // FIX: Enforce hours validation (0-168)
+        if (e.getMaxHoursPerWeek() != null && (e.getMaxHoursPerWeek() < 0 || e.getMaxHoursPerWeek() > 168)) {
+            throw new IllegalArgumentException("Invalid max hours");
+        }
         return repository.save(e);
     }
+
     @Override
-    public Employee getEmployee(Long id) { return repository.findById(id).orElseThrow(() -> new RuntimeException("not found")); }
+    public Employee getEmployee(Long id) { 
+        return repository.findById(id).orElse(null); 
+    }
+
     @Override
     public Employee updateEmployee(Long id, Employee e) {
-        Employee old = getEmployee(id);
+        Employee old = repository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
         old.setFullName(e.getFullName());
+        old.setMaxHoursPerWeek(e.getMaxHoursPerWeek());
         return repository.save(old);
     }
+
     @Override
-    public void deleteEmployee(Long id) { repository.delete(getEmployee(id)); }
+    public void deleteEmployee(Long id) { repository.deleteById(id); }
+
     @Override
     public Employee findByEmail(String email) { return repository.findByEmail(email).orElse(null); }
+
     @Override
     public List<Employee> getAll() { return repository.findAll(); }
+
     @Override
     public Page<Employee> getActiveEmployees(Pageable pageable) { return repository.findAll(pageable); }
 }
