@@ -2,24 +2,27 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ShiftTemplate;
 import com.example.demo.service.ShiftTemplateService;
-import com.example.demo.repository.DepartmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/shift-templates")
 public class ShiftTemplateController {
-    private final ShiftTemplateService shiftTemplateService;
 
-    // Required by Test line 514: Constructor must take Service AND Repository
-    public ShiftTemplateController(ShiftTemplateService service, DepartmentRepository repo) {
-        this.shiftTemplateService = service;
+    @Autowired
+    private ShiftTemplateService shiftTemplateService;
+
+    @GetMapping
+    public ResponseEntity<List<ShiftTemplate>> getAllTemplates() {
+        // Now matches the getAll() method in the Service
+        return ResponseEntity.ok(shiftTemplateService.getAll());
     }
 
-    // Required by Test line 516
-    @GetMapping
-    public ResponseEntity<List<ShiftTemplate>> list() {
-        return ResponseEntity.ok(shiftTemplateService.getAll());
+    @PostMapping
+    public ResponseEntity<ShiftTemplate> createTemplate(@RequestBody ShiftTemplate template) {
+        return ResponseEntity.ok(shiftTemplateService.saveShiftTemplate(template));
     }
 }

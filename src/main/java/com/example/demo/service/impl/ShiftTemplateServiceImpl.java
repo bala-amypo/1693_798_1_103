@@ -5,7 +5,6 @@ import com.example.demo.repository.ShiftTemplateRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -16,24 +15,14 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     @Override
     public ShiftTemplate saveShiftTemplate(ShiftTemplate st) {
-        // Fix for: testShiftTemplateInvalidTime
-        if (st.getStartTime() == null || st.getEndTime() == null || 
-            st.getEndTime().isBefore(st.getStartTime())) {
-            throw new IllegalArgumentException("Invalid shift times");
+        if (shiftTemplateRepository.existsByTemplateNameAndDepartment(st.getTemplateName(), st.getDepartment())) {
+            throw new RuntimeException("Duplicate shift template name in this department");
         }
-        
-        // Fix for: testShiftTemplateUniqueWithinDept
-        boolean exists = shiftTemplateRepository.existsByTemplateNameAndDepartment(
-            st.getTemplateName(), st.getDepartment());
-        if (exists) {
-            throw new RuntimeException("Template name already exists in this department");
-        }
-        
         return shiftTemplateRepository.save(st);
     }
 
     @Override
-    public List<ShiftTemplate> getAllShiftTemplates() {
+    public List<ShiftTemplate> getAll() {
         return shiftTemplateRepository.findAll();
     }
 
