@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,16 +12,12 @@ import java.util.List;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
+    @Autowired
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @PostMapping // Visible in Swagger
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.createEmployee(employee));
-    }
-
-    @GetMapping // Fixed "cannot find symbol: method list()" (image_93b7c5.png)
+    @GetMapping
     public ResponseEntity<List<Employee>> list() {
         return ResponseEntity.ok(employeeService.getAll());
     }
@@ -28,6 +25,6 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
-        return ResponseEntity.ok("Deleted"); // Expected by tests
+        return ResponseEntity.ok("Deleted");
     }
 }
