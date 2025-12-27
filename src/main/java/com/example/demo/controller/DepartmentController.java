@@ -56,7 +56,7 @@ public class DepartmentController {
     public ResponseEntity<Department> get(@PathVariable Long id) {
         return ResponseEntity.ok(departmentService.get(id));
     }
-
+    
     @GetMapping
     public ResponseEntity<List<Department>> list() {
         return ResponseEntity.ok(departmentService.getAll());
