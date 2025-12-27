@@ -1,30 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Schedule;
+import com.example.demo.model.GeneratedShiftSchedule;
 import com.example.demo.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedules")
 public class ScheduleController {
+    private final ScheduleService scheduleService;
 
     @Autowired
-    private ScheduleService scheduleService;
-
-    @PostMapping("/generate")
-    public List<Schedule> generateSchedule(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return scheduleService.generateSchedule(date);
+    public ScheduleController(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
     }
 
-    @GetMapping
-    public List<Schedule> getSchedules(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return scheduleService.getByDate(date);
+    @PostMapping("/generate/{date}")
+    public ResponseEntity<List<GeneratedShiftSchedule>> generate(@PathVariable String date) {
+        return ResponseEntity.ok(scheduleService.generateForDate(LocalDate.parse(date)));
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<GeneratedShiftSchedule>> byDate(@PathVariable String date) {
+        return ResponseEntity.ok(scheduleService.getByDate(LocalDate.parse(date)));
     }
 }
