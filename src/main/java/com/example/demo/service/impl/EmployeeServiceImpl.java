@@ -64,7 +64,6 @@
 //         return employeeRepository.findAll();
 //     }
 // }
-
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Employee;
@@ -98,9 +97,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
+    // This was the missing method causing the compilation error
+    @Override
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-        // Fix: Explicitly check existence to prevent silent creation or generic errors
         if (!employeeRepository.existsById(id)) {
             throw new RuntimeException("Employee not found");
         }

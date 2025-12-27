@@ -27,7 +27,6 @@
 //         return ResponseEntity.ok("Deleted");
 //     }
 // }
-
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
@@ -73,8 +72,6 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        // Fix: Catch the RuntimeException locally so unit tests invoking this method directly
-        // receive a 404 response instead of a crash.
         try {
             departmentService.delete(id);
             return ResponseEntity.ok("Deleted");

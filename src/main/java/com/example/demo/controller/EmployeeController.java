@@ -29,7 +29,6 @@
 //     }
 // }
 
-
 package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
@@ -75,7 +74,6 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody Employee employee) {
-        // Fix: Catch the "Employee not found" exception and return 404
         try {
             return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
         } catch (RuntimeException e) {
