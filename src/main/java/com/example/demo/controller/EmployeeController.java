@@ -29,11 +29,13 @@
 //     }
 // }
 
+
 package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -50,12 +52,20 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.createEmployee(employee));
+        try {
+            return ResponseEntity.ok(employeeService.createEmployee(employee));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> get(@PathVariable Long id) {
-        return ResponseEntity.ok(employeeService.getEmployee(id));
+        try {
+            return ResponseEntity.ok(employeeService.getEmployee(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping
@@ -65,12 +75,21 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+        // Fix: Catch the "Employee not found" exception and return 404
+        try {
+            return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
-        return ResponseEntity.ok("Deleted");
+        try {
+            employeeService.deleteEmployee(id);
+            return ResponseEntity.ok("Deleted");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

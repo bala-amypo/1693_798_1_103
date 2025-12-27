@@ -33,6 +33,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -49,12 +50,20 @@ public class DepartmentController {
 
     @PostMapping
     public ResponseEntity<Department> create(@RequestBody Department department) {
-        return ResponseEntity.ok(departmentService.create(department));
+        try {
+            return ResponseEntity.ok(departmentService.create(department));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> get(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentService.get(id));
+        try {
+            return ResponseEntity.ok(departmentService.get(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @GetMapping
@@ -64,7 +73,13 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        departmentService.delete(id);
-        return ResponseEntity.ok("Deleted");
+        // Fix: Catch the RuntimeException locally so unit tests invoking this method directly
+        // receive a 404 response instead of a crash.
+        try {
+            departmentService.delete(id);
+            return ResponseEntity.ok("Deleted");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
