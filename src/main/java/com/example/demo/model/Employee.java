@@ -22,18 +22,29 @@ public class Employee {
     private String role;
     private Double maxHoursPerWeek;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> skills = new ArrayList<>();
 
-    // --- COMPATIBILITY CONSTRUCTOR FOR TESTS ---
-    // The test calls: new Employee(String, String, String, String, int)
-    // We map this to the current fields.
+    // Compatibility constructor
     public Employee(String fullName, String email, String role, String ignoredDepartment, int maxHours) {
         this.fullName = fullName;
         this.email = email;
         this.role = role;
-        // We ignore the 4th argument (department) as it was removed from the model
-        this.maxHoursPerWeek = (double) maxHours;
+        setMaxHoursPerWeek((double) maxHours); // Use setter for validation
         this.skills = new ArrayList<>();
+    }
+
+    // --- FIX: Validation Logic for Max Hours ---
+    public void setMaxHoursPerWeek(Double maxHoursPerWeek) {
+        if (maxHoursPerWeek < 0 || maxHoursPerWeek > 168) {
+            throw new IllegalArgumentException("Invalid max hours per week");
+        }
+        this.maxHoursPerWeek = maxHoursPerWeek;
+    }
+
+    // --- FIX: Skill Matching Helper ---
+    public boolean hasSkill(String requiredSkill) {
+        if (requiredSkill == null || skills == null) return false;
+        return skills.stream().anyMatch(s -> s.equalsIgnoreCase(requiredSkill));
     }
 }

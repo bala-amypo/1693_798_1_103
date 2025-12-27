@@ -2,7 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.ShiftTemplate;
 import com.example.demo.repository.ShiftTemplateRepository;
-import com.example.demo.repository.DepartmentRepository; // Added for constructor compatibility
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,8 @@ import java.util.List;
 public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     private final ShiftTemplateRepository shiftTemplateRepository;
-    // We include this because the test tries to inject it, even if we don't use it heavily
     private final DepartmentRepository departmentRepository;
 
-    // --- CONSTRUCTOR INJECTION (Fixes Test Instantiation Error) ---
     @Autowired
     public ShiftTemplateServiceImpl(ShiftTemplateRepository shiftTemplateRepository, 
                                     DepartmentRepository departmentRepository) {
@@ -25,8 +23,9 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     @Override
     public ShiftTemplate saveShiftTemplate(ShiftTemplate st) {
+        // --- FIX: Use IllegalArgumentException for duplicates ---
         if (shiftTemplateRepository.existsByTemplateNameAndDepartment(st.getTemplateName(), st.getDepartment())) {
-            throw new RuntimeException("Duplicate shift template name in this department");
+            throw new IllegalArgumentException("Duplicate shift template name in this department");
         }
         return shiftTemplateRepository.save(st);
     }
@@ -45,8 +44,6 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
     public void deleteShiftTemplate(Long id) {
         shiftTemplateRepository.deleteById(id);
     }
-
-    // --- COMPATIBILITY IMPLEMENTATIONS FOR TESTS ---
 
     @Override
     public ShiftTemplate create(ShiftTemplate shiftTemplate) {
