@@ -8,9 +8,8 @@ import java.util.List;
 
 @Repository
 public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
-    // Correctly find availability by exact date
     List<Availability> findByDate(LocalDate date);
-    
-    // Check existence
+    List<Availability> findByEmployee_Id(Long employeeId);
+    Availability findByEmployee_IdAndDate(Long employeeId, LocalDate date);
     boolean existsByDateAndEmployee_Id(LocalDate date, Long employeeId);
 }
