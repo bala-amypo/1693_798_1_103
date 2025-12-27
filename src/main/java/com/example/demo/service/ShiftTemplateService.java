@@ -1,15 +1,24 @@
-package com.example.demo.service;
+@Service
+public class ShiftService {
 
-import com.example.demo.model.ShiftTemplate;
-import java.util.List;
+    @Autowired
+    private ShiftRepository shiftRepo;
 
-public interface ShiftTemplateService {
-    ShiftTemplate saveTemplate(ShiftTemplate template);
-    ShiftTemplate getTemplateById(Long id);
-    List<ShiftTemplate> getTemplatesByDepartment(Long departmentId);
-    void deleteTemplate(Long id);
-    List<ShiftTemplate> getAll();
-    // Supporting method for the Master Test suite
-    ShiftTemplate create(ShiftTemplate st);
-    List<ShiftTemplate> getByDepartment(Long deptId);
+    public void assignShift(Employee employee, Shift shift) throws Exception {
+        // Fix for: testEmployeeMaxHoursInvalid - FAIL
+        double totalHours = shiftRepo.calculateWeeklyHours(employee.getId());
+        double newShiftDuration = Duration.between(shift.getStartTime(), shift.getEndTime()).toHours();
+
+        if (totalHours + newShiftDuration > employee.getMaxHoursPerWeek()) {
+            throw new OverWorkException("Employee has exceeded their weekly hour limit.");
+        }
+
+        // Fix for: testShiftTemplateUniqueWithinDept - FAIL
+        boolean exists = shiftRepo.existsByDepartmentAndName(shift.getDepartment(), shift.getName());
+        if (exists) {
+            throw new DuplicateShiftException("A shift with this name already exists in the department.");
+        }
+
+        shiftRepo.save(shift);
+    }
 }
