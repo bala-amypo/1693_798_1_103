@@ -1,7 +1,35 @@
+// package com.example.demo.controller;
+
+// import com.example.demo.model.ShiftTemplate;
+// import com.example.demo.repository.DepartmentRepository;
+// import com.example.demo.service.ShiftTemplateService;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.*;
+// import java.util.List;
+
+// @RestController
+// @RequestMapping("/api/shift-templates")
+// public class ShiftTemplateController {
+//     private final ShiftTemplateService shiftTemplateService;
+//     private final DepartmentRepository departmentRepository;
+
+//     @Autowired
+//     public ShiftTemplateController(ShiftTemplateService shiftTemplateService, DepartmentRepository departmentRepository) {
+//         this.shiftTemplateService = shiftTemplateService;
+//         this.departmentRepository = departmentRepository;
+//     }
+
+//     @GetMapping
+//     public ResponseEntity<List<ShiftTemplate>> list() {
+//         // Logic simplified for test
+//         return ResponseEntity.ok(shiftTemplateService.getByDepartment(null));
+//     }
+// }
+
 package com.example.demo.controller;
 
 import com.example.demo.model.ShiftTemplate;
-import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +40,23 @@ import java.util.List;
 @RequestMapping("/api/shift-templates")
 public class ShiftTemplateController {
     private final ShiftTemplateService shiftTemplateService;
-    private final DepartmentRepository departmentRepository;
 
     @Autowired
-    public ShiftTemplateController(ShiftTemplateService shiftTemplateService, DepartmentRepository departmentRepository) {
+    public ShiftTemplateController(ShiftTemplateService shiftTemplateService) {
         this.shiftTemplateService = shiftTemplateService;
-        this.departmentRepository = departmentRepository;
+    }
+
+    @PostMapping
+    public ResponseEntity<ShiftTemplate> create(@RequestBody ShiftTemplate shiftTemplate) {
+        return ResponseEntity.ok(shiftTemplateService.create(shiftTemplate));
     }
 
     @GetMapping
-    public ResponseEntity<List<ShiftTemplate>> list() {
-        // Logic simplified for test
-        return ResponseEntity.ok(shiftTemplateService.getByDepartment(null));
+    public ResponseEntity<List<ShiftTemplate>> list(@RequestParam(required = false) Long departmentId) {
+        if (departmentId != null) {
+            return ResponseEntity.ok(shiftTemplateService.getByDepartment(departmentId));
+        }
+        // Fix: Use getAll() instead of passing null to repo
+        return ResponseEntity.ok(shiftTemplateService.getAll());
     }
 }
