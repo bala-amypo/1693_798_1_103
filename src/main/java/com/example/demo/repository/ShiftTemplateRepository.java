@@ -5,14 +5,18 @@ import com.example.demo.model.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ShiftTemplateRepository extends JpaRepository<ShiftTemplate, Long> {
-
-    // 1. Fixes the "existsBy..." error from the previous step
+    
+    // Used by your Service
     boolean existsByTemplateNameAndDepartment(String templateName, Department department);
-
-    // 2. Fixes the NEW error: findByDepartment_Id
-    // Spring automatically converts this to: SELECT * FROM shift_template WHERE department_id = ?
+    
+    // Used by your Service
     List<ShiftTemplate> findByDepartment_Id(Long departmentId);
+
+    // --- COMPATIBILITY FOR TESTS ---
+    // The test expects this exact name:
+    Optional<ShiftTemplate> findByTemplateNameAndDepartment_Id(String name, Long deptId);
 }
