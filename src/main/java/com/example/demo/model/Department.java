@@ -1,23 +1,25 @@
 package com.example.demo.model;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Department {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String description;
-    private String location; 
-    private LocalDateTime createdAt;
+    private String requiredSkills; // Test expects "requiredSkills" (plural/string)
 
-    public Department(String name, String description, String location) {
+    // Constructor required by Test: testCreateDepartment
+    public Department(String name, String description, String requiredSkills) {
         this.name = name;
         this.description = description;
-        this.location = location;
-        this.createdAt = LocalDateTime.now();
+        this.requiredSkills = requiredSkills;
     }
-    // Required for the scheduling logic
-    public String getRequiredSkills() { return location; }
 }

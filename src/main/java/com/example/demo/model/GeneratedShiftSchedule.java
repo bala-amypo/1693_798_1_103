@@ -19,5 +19,5 @@ public class GeneratedShiftSchedule {
     @ManyToOne
     private ShiftTemplate shiftTemplate;
 
-    private LocalDate shiftDate; // Test expects "shiftDate"
+    private LocalDate shiftDate;
 }

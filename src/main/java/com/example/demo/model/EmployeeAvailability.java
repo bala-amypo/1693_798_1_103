@@ -16,10 +16,10 @@ public class EmployeeAvailability {
     @ManyToOne
     private Employee employee;
 
-    private LocalDate availableDate; // Test expects "availableDate"
-    private Boolean available;       // Test expects "available"
+    private LocalDate availableDate;
+    private Boolean available;
 
-    // Constructor used in tests
+    // Constructor required by Test: testAvailabilityUniqueCheck
     public EmployeeAvailability(Employee employee, LocalDate availableDate, Boolean available) {
         this.employee = employee;
         this.availableDate = availableDate;
