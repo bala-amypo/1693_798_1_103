@@ -1,15 +1,18 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Availability;
+import com.example.demo.model.EmployeeAvailability;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
-    List<Availability> findByDate(LocalDate date);
-    List<Availability> findByEmployee_Id(Long employeeId);
-    Availability findByEmployee_IdAndDate(Long employeeId, LocalDate date);
-    boolean existsByDateAndEmployee_Id(LocalDate date, Long employeeId);
+public interface AvailabilityRepository extends JpaRepository<EmployeeAvailability, Long> {
+    // Exact method name used in Test: testAvailabilityRepoQuery
+    List<EmployeeAvailability> findByAvailableDateAndAvailable(LocalDate date, Boolean available);
+    
+    // Exact method name used in Test: testAvailabilityUniqueCheck
+    Optional<EmployeeAvailability> findByEmployee_IdAndAvailableDate(Long empId, LocalDate date);
+
+    // Exact method name used in Test: testAvailabilityRepoEmployeeQuery
+    List<EmployeeAvailability> findByEmployee_Id(Long empId);
 }

@@ -4,26 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeAvailability {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne @JoinColumn(name = "employee_id")
+    @ManyToOne
     private Employee employee;
 
-    private LocalDate availableDate;
-    private Boolean available;
+    private LocalDate availableDate; // Test expects "availableDate"
+    private Boolean available;       // Test expects "available"
 
-    // Constructor required by tests
-    public EmployeeAvailability(Employee employee, LocalDate date, boolean available) {
+    // Constructor used in tests
+    public EmployeeAvailability(Employee employee, LocalDate availableDate, Boolean available) {
         this.employee = employee;
-        this.availableDate = date;
+        this.availableDate = availableDate;
         this.available = available;
-    }
-
-    // Explicit setId for test compatibility
-    public void setId(long id) {
-        this.id = id;
     }
 }

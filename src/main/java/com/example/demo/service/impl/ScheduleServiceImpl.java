@@ -13,49 +13,65 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-    @Autowired
     private ShiftTemplateRepository shiftTemplateRepository;
-    @Autowired
     private AvailabilityRepository availabilityRepository;
+    private EmployeeRepository employeeRepository;
+    private GeneratedShiftScheduleRepository scheduleRepository;
+    private DepartmentRepository departmentRepository;
+
+    // MANDATORY: The test file uses this exact constructor
+    @Autowired
+    public ScheduleServiceImpl(ShiftTemplateRepository shiftTemplateRepository,
+                               AvailabilityRepository availabilityRepository,
+                               EmployeeRepository employeeRepository,
+                               GeneratedShiftScheduleRepository scheduleRepository,
+                               DepartmentRepository departmentRepository) {
+        this.shiftTemplateRepository = shiftTemplateRepository;
+        this.availabilityRepository = availabilityRepository;
+        this.employeeRepository = employeeRepository;
+        this.scheduleRepository = scheduleRepository;
+        this.departmentRepository = departmentRepository;
+    }
 
     @Override
-    public List<Schedule> generateSchedule(LocalDate date) {
-        List<Schedule> generatedSchedules = new ArrayList<>();
-        
-        List<ShiftTemplate> templates = shiftTemplateRepository.findAll();
-        List<Availability> availabilities = availabilityRepository.findByDate(date);
-        
-        for (ShiftTemplate template : templates) {
-            for (Availability availability : availabilities) {
-                Employee employee = availability.getEmployee();
-                
-                // Skill Check
-                if (template.getRequiredSkill() != null && !template.getRequiredSkill().isEmpty()) {
-                    if (!employee.hasSkill(template.getRequiredSkill())) {
-                        continue; 
-                    }
-                }
+    // MANDATORY: Test calls "generateForDate", not "generateSchedule"
+    public List<GeneratedShiftSchedule> generateForDate(LocalDate date) {
+        List<GeneratedShiftSchedule> schedules = new ArrayList<>();
 
-                boolean alreadyScheduled = generatedSchedules.stream()
-                        .anyMatch(s -> s.getEmployee().getId().equals(employee.getId()));
-                        
-                if (!alreadyScheduled) {
-                    Schedule schedule = new Schedule();
-                    schedule.setDate(date);
-                    schedule.setEmployee(employee);
-                    schedule.setShiftTemplate(template);
-                    generatedSchedules.add(scheduleRepository.save(schedule));
+        // 1. Get all departments
+        List<Department> departments = departmentRepository.findAll();
+
+        for (Department dept : departments) {
+            // 2. Get shifts for dept
+            List<ShiftTemplate> shifts = shiftTemplateRepository.findByDepartment_Id(dept.getId());
+
+            // 3. Get available employees for this date
+            List<EmployeeAvailability> availabilities = availabilityRepository
+                    .findByAvailableDateAndAvailable(date, true);
+
+            for (ShiftTemplate shift : shifts) {
+                for (EmployeeAvailability av : availabilities) {
+                    Employee emp = av.getEmployee();
+                    
+                    // Simple logic: If employee has the required skill, schedule them
+                    if (emp.getSkills().contains(shift.getRequiredSkills())) {
+                         GeneratedShiftSchedule sched = new GeneratedShiftSchedule();
+                         sched.setEmployee(emp);
+                         sched.setShiftTemplate(shift);
+                         sched.setShiftDate(date);
+                         
+                         schedules.add(scheduleRepository.save(sched));
+                         break; // One person per shift for simplicity in this logic
+                    }
                 }
             }
         }
-        return generatedSchedules;
+        return schedules;
     }
 
-    // Renamed to match Interface
     @Override
-    public List<Schedule> getByDate(LocalDate date) {
-        return scheduleRepository.findByDate(date);
+    // Match test: scheduleService.getByDate(d)
+    public List<GeneratedShiftSchedule> getByDate(LocalDate date) {
+        return scheduleRepository.findByShiftDate(date);
     }
 }

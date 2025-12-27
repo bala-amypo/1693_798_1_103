@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Availability;
-import com.example.demo.model.Employee;
+import com.example.demo.model.EmployeeAvailability;
 import com.example.demo.repository.AvailabilityRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AvailabilityService;
@@ -10,64 +9,49 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
 
-    @Autowired
     private AvailabilityRepository availabilityRepository;
-
-    @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Override
-    public List<Availability> getAvailability(LocalDate date) {
-        if (date == null) {
-            return availabilityRepository.findAll();
-        }
-        return availabilityRepository.findByDate(date);
+    // MANDATORY: Test expects this constructor
+    @Autowired
+    public AvailabilityServiceImpl(AvailabilityRepository availabilityRepository, EmployeeRepository employeeRepository) {
+        this.availabilityRepository = availabilityRepository;
+        this.employeeRepository = employeeRepository;
     }
 
-    // Renamed to match Interface
     @Override
-    public List<Availability> getByEmployee(Long employeeId) {
-        return availabilityRepository.findByEmployee_Id(employeeId);
+    public List<EmployeeAvailability> getByDate(LocalDate date) {
+        // Test calls "getByDate"
+        return availabilityRepository.findByAvailableDateAndAvailable(date, true);
     }
 
-    // Renamed to match Interface
     @Override
-    public Availability create(Availability availability) {
-        if (availability.getEmployee() != null && availability.getEmployee().getId() != null) {
-             Optional<Employee> emp = employeeRepository.findById(availability.getEmployee().getId());
-             emp.ifPresent(availability::setEmployee);
+    public EmployeeAvailability create(EmployeeAvailability availability) {
+        // Test expects exception if exists
+        if(availabilityRepository.findByEmployee_IdAndAvailableDate(
+                availability.getEmployee().getId(), availability.getAvailableDate()).isPresent()) {
+            throw new RuntimeException("Availability exists");
         }
-
-        Availability existing = availabilityRepository.findByEmployee_IdAndDate(
-                availability.getEmployee().getId(), 
-                availability.getDate()
-        );
-
-        if (existing != null) {
-            existing.setDate(availability.getDate());
-            return availabilityRepository.save(existing);
-        }
-
         return availabilityRepository.save(availability);
     }
 
-    // Renamed to match Interface
     @Override
-    public void delete(Long id) {
-        availabilityRepository.deleteById(id);
+    public EmployeeAvailability update(Long id, EmployeeAvailability details) {
+        EmployeeAvailability existing = availabilityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+        // Update logic
+        existing.setAvailable(details.getAvailable());
+        return availabilityRepository.save(existing);
     }
 
-    // Renamed to match Interface
     @Override
-    public Availability update(Long id, Availability availability) {
-        return availabilityRepository.findById(id).map(existing -> {
-            existing.setDate(availability.getDate());
-            return availabilityRepository.save(existing);
-        }).orElse(null);
+    public void delete(Long id) {
+        EmployeeAvailability existing = availabilityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+        availabilityRepository.delete(existing);
     }
 }
