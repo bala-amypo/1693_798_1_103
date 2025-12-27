@@ -38,7 +38,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                     }
                 }
 
-                // Check for duplicate schedule for this employee on this date
                 boolean alreadyScheduled = generatedSchedules.stream()
                         .anyMatch(s -> s.getEmployee().getId().equals(employee.getId()));
                         
@@ -54,8 +53,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return generatedSchedules;
     }
 
+    // Renamed to match Interface
     @Override
-    public List<Schedule> getSchedulesByDate(LocalDate date) {
+    public List<Schedule> getByDate(LocalDate date) {
         return scheduleRepository.findByDate(date);
     }
 }

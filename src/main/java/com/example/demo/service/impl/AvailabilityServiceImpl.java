@@ -29,27 +29,26 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         return availabilityRepository.findByDate(date);
     }
 
+    // Renamed to match Interface
     @Override
-    public List<Availability> getAvailabilityByEmployee(Long employeeId) {
+    public List<Availability> getByEmployee(Long employeeId) {
         return availabilityRepository.findByEmployee_Id(employeeId);
     }
 
+    // Renamed to match Interface
     @Override
-    public Availability createAvailability(Availability availability) {
-        // Ensure employee exists
+    public Availability create(Availability availability) {
         if (availability.getEmployee() != null && availability.getEmployee().getId() != null) {
              Optional<Employee> emp = employeeRepository.findById(availability.getEmployee().getId());
              emp.ifPresent(availability::setEmployee);
         }
 
-        // Check duplicates
         Availability existing = availabilityRepository.findByEmployee_IdAndDate(
                 availability.getEmployee().getId(), 
                 availability.getDate()
         );
 
         if (existing != null) {
-            // Update existing if needed, or just return it
             existing.setDate(availability.getDate());
             return availabilityRepository.save(existing);
         }
@@ -57,16 +56,17 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         return availabilityRepository.save(availability);
     }
 
+    // Renamed to match Interface
     @Override
-    public void deleteAvailability(Long id) {
+    public void delete(Long id) {
         availabilityRepository.deleteById(id);
     }
 
+    // Renamed to match Interface
     @Override
-    public Availability updateAvailability(Long id, Availability availability) {
+    public Availability update(Long id, Availability availability) {
         return availabilityRepository.findById(id).map(existing -> {
             existing.setDate(availability.getDate());
-            // Update other fields if necessary
             return availabilityRepository.save(existing);
         }).orElse(null);
     }
