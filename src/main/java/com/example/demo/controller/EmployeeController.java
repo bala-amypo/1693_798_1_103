@@ -4,7 +4,6 @@ import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,7 +21,6 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    // This must be named 'list' to satisfy MasterTestNGSuiteTest
     @GetMapping
     public ResponseEntity<List<Employee>> list() {
         return ResponseEntity.ok(employeeService.getAll());
@@ -38,7 +36,6 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
     }
 
-    // This must be named 'delete' to satisfy MasterTestNGSuiteTest
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         try {

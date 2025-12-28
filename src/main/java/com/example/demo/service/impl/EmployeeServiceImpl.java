@@ -5,7 +5,6 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -16,10 +15,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    // Fix for the findByEmail compilation error
     @Override
-    public Optional<Employee> findByEmail(String email) {
-        return employeeRepository.findByEmail(email);
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email).orElse(null);
     }
 
     @Override
@@ -36,8 +34,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setName(details.getName());
             employee.setEmail(details.getEmail());
             employee.setRole(details.getRole());
+            employee.setSkills(details.getSkills());
             employee.setMaxHoursPerWeek(details.getMaxHoursPerWeek());
-            employee.setSkills(details.getSkills()); // Added skill update
             return employeeRepository.save(employee);
         }).orElseThrow(() -> new RuntimeException("Employee not found"));
     }
