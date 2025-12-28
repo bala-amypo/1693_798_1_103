@@ -4,6 +4,7 @@ import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    // Rename/Alias for the Test Suite: testEmployeeControllerList
+    // This must be named 'list' to satisfy MasterTestNGSuiteTest
     @GetMapping
     public ResponseEntity<List<Employee>> list() {
         return ResponseEntity.ok(employeeService.getAll());
@@ -32,7 +33,12 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployee(id));
     }
 
-    // Rename/Alias for the Test Suite: testEmployeeDeleteController
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+    }
+
+    // This must be named 'delete' to satisfy MasterTestNGSuiteTest
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
