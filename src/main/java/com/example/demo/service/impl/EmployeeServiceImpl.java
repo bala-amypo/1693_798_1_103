@@ -5,6 +5,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -15,9 +16,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    // Fix for the findByEmail compilation error
+    @Override
+    public Optional<Employee> findByEmail(String email) {
+        return employeeRepository.findByEmail(email);
+    }
+
     @Override
     public Employee createEmployee(Employee employee) {
-        // Fix for testCreateEmployeeEmailDuplicate
         if (employeeRepository.existsByEmail(employee.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -26,19 +32,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(Long id, Employee details) {
-        // Fix for testUpdateEmployee: ensure it exists first
         return employeeRepository.findById(id).map(employee -> {
             employee.setName(details.getName());
             employee.setEmail(details.getEmail());
             employee.setRole(details.getRole());
             employee.setMaxHoursPerWeek(details.getMaxHoursPerWeek());
+            employee.setSkills(details.getSkills()); // Added skill update
             return employeeRepository.save(employee);
         }).orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        // Fix for testDeleteEmployee: check existence before delete to avoid raw JPA errors
         if (!employeeRepository.existsById(id)) {
             throw new RuntimeException("Employee not found");
         }
